@@ -3,6 +3,8 @@ package com.ofir.heroapp.ui
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
+import android.widget.Toolbar
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.ofir.heroapp.R
 import com.ofir.heroapp.adapters.ListOfHeroesAdapter
@@ -15,6 +17,10 @@ import kotlinx.android.synthetic.main.activity_main.*
 import retrofit2.Call
 import retrofit2.Callback
 import retrofit2.Response
+
+
+
+
 
 class MainActivity : AppCompatActivity() {
     val TAG = "MainActivity"
@@ -31,6 +37,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
+
+        val toolbar = findViewById<androidx.appcompat.widget.Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
 
         heroesDatabase = HeroesDatabase.getDatabase(this)!!
 
