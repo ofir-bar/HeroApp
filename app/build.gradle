@@ -49,4 +49,8 @@ dependencies {
 
     // 3rd-party libraries //
 
+    // Networking
+    implementation 'com.squareup.retrofit2:retrofit:2.0.0'
+    implementation 'com.squareup.retrofit2:converter-gson:2.0.0'
+
 }

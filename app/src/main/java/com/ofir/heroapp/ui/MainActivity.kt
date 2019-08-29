@@ -1,6 +1,5 @@
 package com.ofir.heroapp.ui
 
-import android.os.AsyncTask
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
@@ -9,18 +8,25 @@ import com.ofir.heroapp.R
 import com.ofir.heroapp.adapters.ListOfHeroesAdapter
 import com.ofir.heroapp.model.Hero
 import com.ofir.heroapp.model.HeroesDatabase
+import com.ofir.heroapp.model.HeroesDatabase.Companion.getDaoInstance
+import com.ofir.heroapp.network.HeroappsApiService
+import com.ofir.heroapp.network.Model
 import kotlinx.android.synthetic.main.activity_main.*
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainActivity : AppCompatActivity() {
-    private var heroesDatabase: HeroesDatabase? = null
-    private var listOfHeroesFromRoom: ArrayList<Hero> = ArrayList()
+    val TAG = "MainActivity"
 
-    // TODO: Use this list for testing only
-    private val listOfHeroesFromMemory: ArrayList<Hero> = arrayListOf(
-        Hero("Wolverin1", arrayListOf("Strong", "Fast"), "someImage"),
-        Hero("Spiderman1", arrayListOf("Fast", "Smart"), "someImage"),
-        Hero("Superman1", arrayListOf("Can Fly", "Laser-eyes"), "someImage")
-    )
+    private var herosList: List<Hero> = ArrayList()
+    private var heroesDatabase: HeroesDatabase? = null
+
+    // Only initialize a networking if it is needed.
+    // The user might already have a copy of the remote DB locally.
+    private val heroappsApiService by lazy {
+        HeroappsApiService.create()
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -28,45 +34,36 @@ class MainActivity : AppCompatActivity() {
 
         heroesDatabase = HeroesDatabase.getDatabase(this)!!
 
-        // Insert heroes from local to make sure Room is working properly.
-        // In-memory objects will be persisted on the device.
-        for(hero in listOfHeroesFromMemory){
-            InsertHero(this,hero).execute()
-        }
-        listOfHeroesFromRoom = GetDataFromDb(this).execute().get() as ArrayList<Hero>
+        // All send network request to fetch data, if it is not stored locally.
+        if (!HeroesDatabase.isDatabaseExist(this)){
 
+            val call = heroappsApiService.getAllHeroesData()
+            call.enqueue(object : Callback<List<Model.Hero>>{
+                override fun onResponse(call: Call<List<Model.Hero>>?, response: Response<List<Model.Hero>>?) {
+                    if (response!!.code() == 200) {
+                        val heroResponse = response.body()!!
+                        for(hero in heroResponse){
+                            Log.e(TAG, hero.toString())
+                            getDaoInstance(baseContext).insert(Hero(hero.title, hero.abilities,hero.image, hero.isFavorite))
+                        }
+                    }
+                }
+
+                override fun onFailure(call: Call<List<Model.Hero>>?, t: Throwable?) {
+                    Log.e(TAG, "ERROR PARSING OR NETWORKING")}
+            })
+        }
+        else{
+            Log.e(TAG, "Database already exists, no need to send a network request")
+        }
+
+        herosList = HeroesDatabase.getDaoInstance(this).getAllHeroes()
 
         main_activity_list_of_heroes.apply {
             layoutManager = LinearLayoutManager(context)
-            adapter = ListOfHeroesAdapter(listOfHeroesFromRoom, context)
+            adapter = ListOfHeroesAdapter(herosList, context)
         }
 
     }
-
-    private class InsertHero(var context: MainActivity, var hero: Hero) : AsyncTask<Void, Void, Boolean>() {
-        override fun doInBackground(vararg params: Void?): Boolean {
-            context.heroesDatabase!!.heroDao().insert(hero)
-            return true
-        }
-        override fun onPostExecute(bool: Boolean?) {
-            if (bool!!) {
-                Log.e("TEST", "ADDED TO DB")
-            }
-        }
-    }
-    private class GetDataFromDb(var context: MainActivity) : AsyncTask<Void, Void, List<Hero>>() {
-        override fun doInBackground(vararg params: Void?): List<Hero> {
-            return context.heroesDatabase!!.heroDao().getAllHeroes()
-        }
-        override fun onPostExecute(heroesList: List<Hero>?) {
-            if (heroesList!!.isNotEmpty()) {
-                for (i in 0 until heroesList.size) {
-                    Log.e("TEST2", heroesList[i].title)
-                }
-            }
-        }
-    }
-
-
 
 }

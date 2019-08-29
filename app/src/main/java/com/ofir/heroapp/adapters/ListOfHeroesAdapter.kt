@@ -25,6 +25,8 @@ class ListOfHeroesAdapter(private val listOfHeroes: List<Hero>, private val cont
         holder.tvHeroTitle.text = listOfHeroes[p1].title
         holder.tvHeroAbilities.text = fromArray(listOfHeroes[p1].abilities)
         holder.ivHeroImage.setImageResource(R.drawable.ic_launcher_background) //TODO: Change it to dynamic image
+
+        //TODO: Add a check if hero is the favorite one.
         holder.ivHeroFavorite.setImageResource(R.drawable.ic_favorite)
     }
 

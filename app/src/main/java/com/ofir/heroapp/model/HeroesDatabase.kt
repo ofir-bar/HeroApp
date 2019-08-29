@@ -5,6 +5,10 @@ import androidx.room.RoomDatabase
 import androidx.room.Database
 import androidx.room.Room
 import androidx.room.TypeConverters
+import com.ofir.heroapp.Constants.HEROES_DATABASE_NAME
+import java.nio.file.Files.exists
+
+
 
 @Database(entities = arrayOf(Hero::class), version = 1)
 @TypeConverters(Converters::class)
@@ -22,12 +26,26 @@ abstract class HeroesDatabase : RoomDatabase() {
                 synchronized(HeroesDatabase::class) {
                     INSTANCE = Room.databaseBuilder(
                         context.getApplicationContext(),
-                        HeroesDatabase::class.java, "chapter.db"
-                    ).build()
+                    HeroesDatabase::class.java, HEROES_DATABASE_NAME
+                    )
+                    .allowMainThreadQueries()
+                    .build()
                 }
             }
             return INSTANCE
         }
+
+        fun getDaoInstance(context: Context): HeroDao{
+            return getDatabase(context)!!.heroDao()
+        }
+
+        // Room is SQLite behind the scenes. SQLite is a file, so we can check if the file exists
+        // It will allow us to know if the DB exist.
+        fun isDatabaseExist(context: Context): Boolean {
+            val dbFile = context.getDatabasePath(HEROES_DATABASE_NAME)
+            return dbFile.exists()
+        }
+
     }
 
 
