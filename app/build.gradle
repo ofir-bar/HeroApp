@@ -53,12 +53,20 @@ dependencies {
     implementation 'com.squareup.retrofit2:retrofit:2.0.0'
     implementation 'com.squareup.retrofit2:converter-gson:2.0.0'
 
+
+    // Images related //
     // Glide: Media management and image loading framework
     implementation 'com.github.bumptech.glide:glide:4.9.0'
     kapt 'com.github.bumptech.glide:compiler:4.9.0'
-
     // Circular ImageView
     implementation 'de.hdodenhof:circleimageview:3.0.1'
+    // Implementation of a zooming for Android ImageView.
+    implementation 'com.github.chrisbanes:PhotoView:2.0.0'
+    // End Images related //
+
+    // Kotlin Anko, makes starting Activity less boilerplate code
+    implementation "org.jetbrains.anko:anko-commons:$anko_version"
+
 
 
 }

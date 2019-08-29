@@ -11,10 +11,11 @@ import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
 import com.bumptech.glide.Glide
 import com.ofir.heroapp.R
-import com.ofir.heroapp.model.Converters
 import com.ofir.heroapp.model.Hero
+import com.ofir.heroapp.ui.FullscreenHeroImageActivity
 import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.hero_card.view.*
+import org.jetbrains.anko.startActivity
 
 class ListOfHeroesAdapter(private val listOfHeroes: List<Hero>, private val context: Context): RecyclerView.Adapter<ListOfHeroesAdapter.MyViewHolder>(){
 
@@ -49,7 +50,9 @@ class ListOfHeroesAdapter(private val listOfHeroes: List<Hero>, private val cont
         }
 
         override fun onClick(view: View?) {
-            Log.e("TEST", "ONCLICK IS WORKING!")
+            val context = itemView.context
+            // Pass the Image data to the next Activity
+            context.startActivity<FullscreenHeroImageActivity>()
         }
     }
 
