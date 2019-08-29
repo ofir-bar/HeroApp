@@ -9,6 +9,7 @@ import android.widget.ImageView
 import android.widget.TextView
 import androidx.cardview.widget.CardView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.ofir.heroapp.R
 import com.ofir.heroapp.model.Converters
 import com.ofir.heroapp.model.Hero
@@ -24,7 +25,7 @@ class ListOfHeroesAdapter(private val listOfHeroes: List<Hero>, private val cont
     override fun onBindViewHolder(holder: MyViewHolder, p1: Int){
         holder.tvHeroTitle.text = listOfHeroes[p1].title
         holder.tvHeroAbilities.text = fromArray(listOfHeroes[p1].abilities)
-        holder.ivHeroImage.setImageResource(R.drawable.ic_launcher_background) //TODO: Change it to dynamic image
+        Glide.with(context).load(listOfHeroes[p1].image).into(holder.ivHeroImage)
 
         //TODO: Add a check if hero is the favorite one.
         holder.ivHeroFavorite.setImageResource(R.drawable.ic_favorite)
