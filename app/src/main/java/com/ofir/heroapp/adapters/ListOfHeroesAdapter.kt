@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide
 import com.ofir.heroapp.R
 import com.ofir.heroapp.model.Converters
 import com.ofir.heroapp.model.Hero
+import de.hdodenhof.circleimageview.CircleImageView
 import kotlinx.android.synthetic.main.hero_card.view.*
 
 class ListOfHeroesAdapter(private val listOfHeroes: List<Hero>, private val context: Context): RecyclerView.Adapter<ListOfHeroesAdapter.MyViewHolder>(){
@@ -40,7 +41,7 @@ class ListOfHeroesAdapter(private val listOfHeroes: List<Hero>, private val cont
 
         val tvHeroTitle: TextView = view.hero_title
         val tvHeroAbilities: TextView = view.hero_abilities
-        val ivHeroImage: ImageView = view.hero_image
+        val ivHeroImage: CircleImageView = view.hero_image
         val ivHeroFavorite: ImageView= view.hero_favorite
 
         init {
