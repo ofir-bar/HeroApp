@@ -14,11 +14,12 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : AppCompatActivity() {
     private var heroesDatabase: HeroesDatabase? = null
     private var listOfHeroesFromRoom: ArrayList<Hero> = ArrayList()
+
     // TODO: Use this list for testing only
     private val listOfHeroesFromMemory: ArrayList<Hero> = arrayListOf(
-        Hero("Wolverin", arrayListOf("Strong", "Fast"), "someImage"),
-        Hero("Spiderman", arrayListOf("Fast", "Smart"), "someImage"),
-        Hero("Superman", arrayListOf("Can Fly", "Laser-eyes"), "someImage")
+        Hero("Wolverin1", arrayListOf("Strong", "Fast"), "someImage"),
+        Hero("Spiderman1", arrayListOf("Fast", "Smart"), "someImage"),
+        Hero("Superman1", arrayListOf("Can Fly", "Laser-eyes"), "someImage")
     )
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -38,7 +39,6 @@ class MainActivity : AppCompatActivity() {
         main_activity_list_of_heroes.apply {
             layoutManager = LinearLayoutManager(context)
             adapter = ListOfHeroesAdapter(listOfHeroesFromRoom, context)
-            //adapter = ListOfHeroesAdapter(listOfHeroesFromMemory ,context)
         }
 
     }
