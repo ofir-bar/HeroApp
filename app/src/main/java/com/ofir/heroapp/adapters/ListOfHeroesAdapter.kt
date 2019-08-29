@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.ofir.heroapp.R
 import com.ofir.heroapp.model.Hero
 
-class ListOfHeroesAdapter(private val listOfHeroes: Set<Hero>, private val context: Context): RecyclerView.Adapter<ListOfHeroesAdapter.MyViewHolder>(){
+class ListOfHeroesAdapter(private val listOfHeroes: List<Hero>, private val context: Context): RecyclerView.Adapter<ListOfHeroesAdapter.MyViewHolder>(){
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): MyViewHolder{
         return MyViewHolder(LayoutInflater.from(context).inflate(R.layout.hero_card, parent, false))

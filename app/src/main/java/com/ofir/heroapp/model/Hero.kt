@@ -1,7 +1,12 @@
 package com.ofir.heroapp.model
 
-/*
-I choose to use Set from the Collections for the hero "abilities", since attributes should not be duplicated.
- */
+import androidx.room.Entity
+import androidx.room.PrimaryKey
 
-data class Hero(val title: String, val abilities: Set<String>, val image: String = "CHANGE ME TO DEFAULT IMAGE", val isFavorite: Boolean = false)
+@Entity(tableName = "heroes")
+data class Hero(
+    @PrimaryKey(autoGenerate = false)
+    val title: String,
+    val abilities: ArrayList<String>,
+    val image: String = "CHANGE ME TO DEFAULT IMAGE",
+    val isFavorite: Boolean = false)
